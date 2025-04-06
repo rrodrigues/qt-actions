@@ -14,22 +14,15 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Download Qt Online Installer
-      run: curl -L "https://download.qt.io/official_releases/online_installers/qt-online-installer-mac-x64-online.dmg" -o qt-installer.dmg
-
-    - name: Mount DMG and Copy Installer
-      run: |
-        hdiutil attach qt-installer.dmg
-        cp -R "/Volumes/qt-online-installer-macOS-x64-4.9.0/qt-online-installer-macOS-x64-4.9.0.app" qt-installer.app
-        hdiutil detach "/Volumes/qt-online-installer-macOS-x64-4.9.0"
-    - name: Installing Qt
-      env:
-        QT_INSTALLER_JWT_TOKEN: ${{ secrets.QT_INSTALLER_JWT_TOKEN }}
-      run: |
-        ./qt-installer.app/Contents/MacOS/qt-online-installer-macOS-x64-4.9.0 \
-          --root ${{github.workspace}}/qt \
-          --accept-licenses --accept-messages --confirm-command --accept-obligations \
-          install qt.qt6.673.clang_64 qt.qt6.673.addons.qtmultimedia
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: '6.7.3'
+        host: 'mac'
+        target: 'desktop'
+        arch: 'clang_64'
+        modules: 'qtmultimedia'
+        aqtversion: '==3.1.*'
           
     - name: Configure CMake
       run: |
