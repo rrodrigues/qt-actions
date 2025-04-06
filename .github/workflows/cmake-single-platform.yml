@@ -34,8 +34,9 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
     - name: Install
-      run: cpack -G ZIP -B install --config build/CPackConfig.cmake
+      run: cmake --install ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --prefix ${{github.workspace}}/install
 
     - uses: actions/upload-artifact@v4
       with:
-        path: ${{github.workspace}}/install/*.zip
+        name: app
+        path: ${{github.workspace}}/install/*.app
