@@ -14,21 +14,21 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v4
-      with:
-        version: '6.7.3'
-        host: 'mac'
-        target: 'desktop'
-        arch: 'clang_64'
-        modules: 'qtmultimedia'
-        archives: 'qtsvg'
-        cache: true  # Cache to speed up builds
-      env:
-        QT_DEBUG: true
+    - name: Download Qt Online Installer
+      run: curl -L "https://download.qt.io/official_releases/online_installers/qt-online-installer-mac-x64-online.dmg" -o qt-installer.dmg
+
+    - name: Mount DMG and Copy Installer
+      run: |
+        hdiutil attach qt-installer.dmg
+        cp -R "/Volumes/qt-online-installer-macOS-x64-4.9.0/qt-online-installer-macOS-x64-4.9.0.app" qt-installer.app
+        hdiutil detach "/Volumes/qt-online-installer-macOS-x64-4.9.0"
+        ./qt-installer.app/Contents/MacOS/qt-online-installer-macOS-x64-4.9.0 \
+          --root ${{github.workspace}}/qt \
+          --accept-licenses --accept-messages --confirm-command --accept-obligations \
+          install qt.qt6.673.clang_64 qt.qt6.673.addons.qtmultimedia
           
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_PREFIX_PATH="${{ env.QT_ROOT_DIR }}/lib/cmake"
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_PREFIX_PATH="${{github.workspace}}/qt/lib/cmake"
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
