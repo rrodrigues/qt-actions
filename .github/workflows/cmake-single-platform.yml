@@ -25,7 +25,8 @@ jobs:
     - name: Installing Qt
       run: |
         ./qt-installer.app/Contents/MacOS/qt-online-installer-macOS-x64-4.9.0 \
-          --root ${{github.workspace}}/qt --email ${{secrets.QT_EMAIL}} --password ${{secrets.QT_PASSWORD}} \
+          --root ${{github.workspace}}/qt \
+          --email ${{secrets.QT_EMAIL}} --password '${{secrets.QT_PASSWORD}}' \
           --accept-licenses --accept-messages --confirm-command --accept-obligations \
           install qt.qt6.673.clang_64 qt.qt6.673.addons.qtmultimedia
           
