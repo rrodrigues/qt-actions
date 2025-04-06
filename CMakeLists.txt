@@ -11,7 +11,7 @@ find_package(Qt6 REQUIRED COMPONENTS Multimedia)
 find_package(Qt6 REQUIRED COMPONENTS Svg)
 find_package(Qt6 REQUIRED COMPONENTS Concurrent)
 
-qt_standard_project_setup(REQUIRES 6.8)
+qt_standard_project_setup(REQUIRES 6.7.3)
 
 qt_add_executable(qtactions main.cpp)
 target_link_libraries(qtactions PUBLIC Qt6::Core Qt6::Widgets)
