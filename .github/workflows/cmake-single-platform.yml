@@ -22,8 +22,10 @@ jobs:
         hdiutil attach qt-installer.dmg
         cp -R "/Volumes/qt-online-installer-macOS-x64-4.9.0/qt-online-installer-macOS-x64-4.9.0.app" qt-installer.app
         hdiutil detach "/Volumes/qt-online-installer-macOS-x64-4.9.0"
+    - name: Installing Qt
+      run: |
         ./qt-installer.app/Contents/MacOS/qt-online-installer-macOS-x64-4.9.0 \
-          --root ${{github.workspace}}/qt \
+          --root ${{github.workspace}}/qt --email ${{secrets.QT_EMAIL}} --password ${{secrets.QT_PASSWORD}} \
           --accept-licenses --accept-messages --confirm-command --accept-obligations \
           install qt.qt6.673.clang_64 qt.qt6.673.addons.qtmultimedia
           
